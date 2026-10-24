@@ -1,3 +1,4 @@
+import os
 from collections.abc import Generator
 
 from sqlmodel import Session, SQLModel, create_engine
@@ -5,11 +6,18 @@ from sqlmodel import Session, SQLModel, create_engine
 from app import models  # noqa: F401
 
 
-DATABASE_URL = "sqlite:///taskflow.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///taskflow.db")
+
+connect_args = (
+    {"check_same_thread": False}
+    if DATABASE_URL.startswith("sqlite")
+    else {}
+)
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False},
+    connect_args=connect_args,
+    pool_pre_ping=True,
 )
 
 
