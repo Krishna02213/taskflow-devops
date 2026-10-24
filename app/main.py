@@ -20,3 +20,12 @@ def health_check():
     return {
         "status": "healthy",
     }
+
+
+@app.get("/info")
+def application_info():
+    return {
+        "name": "TaskFlow API",
+        "version": "0.1.0",
+        "environment": "development",
+    }
